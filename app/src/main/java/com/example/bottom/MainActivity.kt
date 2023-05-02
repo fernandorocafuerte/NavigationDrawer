@@ -1,47 +1,58 @@
 package com.example.bottom
 
-
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import com.example.bottom.databinding.ActivityMainBinding
+import android.view.MenuItem
+import android.widget.Toast
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.drawerlayout.widget.DrawerLayout
+import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+   lateinit var toggle : ActionBarDrawerToggle
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        replacerFragment(Home())
+        setContentView(R.layout.activity_main)
 
-        binding.bottomNavigationView.setOnItemReselectedListener{
+        val drawerLayout : DrawerLayout = findViewById(R.id.drawerLayout)
+        val navView : NavigationView = findViewById(R.id.nav_view)
 
-            when (it.itemId) {
+        toggle = ActionBarDrawerToggle(this,drawerLayout,R.string.open,R.string.close)
+        drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
 
-                R.id.home -> replacerFragment(Home())
-                R.id.profile -> replacerFragment(Profile())
-                R.id.settings -> replacerFragment(Settings())
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-                else -> {
+        navView.setNavigationItemSelectedListener {
+
+            when(it.itemId){
+
+                R.id.nav_home -> Toast.makeText(applicationContext,"Clicked Home",Toast.LENGTH_SHORT).show()
+                R.id.nav_message -> Toast.makeText(applicationContext,"Clicked message",Toast.LENGTH_SHORT).show()
+                R.id.nav_sync -> Toast.makeText(applicationContext,"Clicked sync",Toast.LENGTH_SHORT).show()
+                R.id.nav_trash -> Toast.makeText(applicationContext,"Clicked trash",Toast.LENGTH_SHORT).show()
+                R.id.nav_settings -> Toast.makeText(applicationContext,"Clicked settings",Toast.LENGTH_SHORT).show()
+                R.id.nav_login -> Toast.makeText(applicationContext,"Clicked login",Toast.LENGTH_SHORT).show()
+                R.id.nav_share -> Toast.makeText(applicationContext,"Clicked share",Toast.LENGTH_SHORT).show()
+                R.id.nav_rate_us -> Toast.makeText(applicationContext,"Clicked rate us",Toast.LENGTH_SHORT).show()
 
 
-                }
             }
 
             true
         }
-
-
     }
 
-    private fun replacerFragment(fragment: Fragment) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-        val fragmentManager = supportFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.frame_layout, fragment)
-        fragmentTransaction.commit()
+        if (toggle.onOptionsItemSelected(item)) {
+
+            return true
+
+        }
+            return super.onOptionsItemSelected(item)
 
     }
 
